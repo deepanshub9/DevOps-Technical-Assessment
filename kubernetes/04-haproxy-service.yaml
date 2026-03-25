@@ -1,0 +1,18 @@
+# HAProxy internal service.
+# Kept as ClusterIP for strict private access and lowest exposure.
+apiVersion: v1
+kind: Service
+metadata:
+  name: haproxy-service
+  namespace: app-stack
+  labels:
+    app: haproxy
+spec:
+  type: ClusterIP
+  selector:
+    app: haproxy
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP

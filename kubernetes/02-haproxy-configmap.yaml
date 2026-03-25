@@ -1,0 +1,28 @@
+# HAProxy config uses Kubernetes DNS service discovery.
+# No hard-coded IPs are used.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-config
+  namespace: app-stack
+  labels:
+    app: haproxy
+data:
+  haproxy.cfg: |
+    global
+      log stdout format raw local0
+
+    defaults
+      mode http
+      timeout connect 5s
+      timeout client  30s
+      timeout server  30s
+
+    frontend http_front
+      bind *:80
+      default_backend tomcat_backend
+
+    backend tomcat_backend
+      balance roundrobin
+      option httpchk GET /
+      server tomcat-service tomcat-service:8080 check

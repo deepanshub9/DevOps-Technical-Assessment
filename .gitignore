@@ -1,0 +1,12 @@
+# Terraform local working directory (providers, modules cache)
+terraform/.terraform/
+
+# Terraform local state and plan artifacts
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

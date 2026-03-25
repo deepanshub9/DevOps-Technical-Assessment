@@ -1,0 +1,11 @@
+# HAProxy has one replica, so allow maxUnavailable=1 for safe maintenance windows.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: haproxy-pdb
+  namespace: app-stack
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: haproxy

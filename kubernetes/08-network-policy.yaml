@@ -1,0 +1,45 @@
+# Optional network policy to reduce lateral movement.
+# It allows:
+# - HAProxy -> Tomcat on 8080
+# - Ingress to HAProxy on 80 from same namespace
+# - DNS egress for service discovery
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: app-stack-restricted
+  namespace: app-stack
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: haproxy
+      ports:
+        - protocol: TCP
+          port: 8080
+    - from:
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 80
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: tomcat
+      ports:
+        - protocol: TCP
+          port: 8080
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

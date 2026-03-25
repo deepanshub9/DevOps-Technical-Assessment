@@ -1,0 +1,8 @@
+# Dedicated namespace for better environment isolation.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app-stack
+  labels:
+    app.kubernetes.io/name: app-stack
+    app.kubernetes.io/part-of: aws-assignment-1
